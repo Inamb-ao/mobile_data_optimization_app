@@ -71,22 +71,13 @@ class SecureStorageScreenState extends State<SecureStorageScreen> {
   Future<void> _retrieveData() async {
     try {
       String? value = await secureStorage.readSecureData('key');
-      if (value != null) {
-        logger.i('Retrieved data: $value');
-        if (mounted) {  // Ensure widget is still mounted before accessing BuildContext
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Retrieved data: $value')),
-          );
-        }
-      } else {
-        logger.w('No data found for the given key.');
-        if (mounted) {  // Ensure widget is still mounted before accessing BuildContext
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('No data found.')),
-          );
-        }
+      logger.i('Retrieved data: $value');
+      if (mounted) {  // Ensure widget is still mounted before accessing BuildContext
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Retrieved data: $value')),
+        );
       }
-    } catch (e) {
+        } catch (e) {
       logger.e('Failed to retrieve data: $e');
       if (mounted) {  // Ensure widget is still mounted before accessing BuildContext
         ScaffoldMessenger.of(context).showSnackBar(
