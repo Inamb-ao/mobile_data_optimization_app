@@ -2,45 +2,56 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id "org.jetbrains.kotlin.android"  // Updated Kotlin plugin
+    id "com.google.gms.google-services"  // If using Firebase (optional)
     id "dev.flutter.flutter-gradle-plugin"
 }
 
 android {
     // Set the namespace for your project
-    namespace "com.example.mobile_data_optimization_app"  // Ensure this matches your application's package name
-    
+    namespace = "com.example.mobile_data_optimization_app"  // Ensure this matches your application's package name
 
-    // Compile SDK version, using the Flutter settings
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+    // Compile SDK version (set to a fixed version instead of flutter.compileSdkVersion)
+    compileSdkVersion 33  // Latest stable version of Android SDK
 
     defaultConfig {
         // Set your unique application ID
         applicationId = "com.example.mobile_data_optimization_app"
-        // Flutter build variables for SDK version, version code, and version name
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        // Fixed minSdkVersion and targetSdkVersion
+        minSdkVersion 21  // Ensure compatibility with Flutter and Android
+        targetSdkVersion 33  // Set to the latest Android SDK
+        versionCode 1
+        versionName "1.0"
+
+        ndkVersion "21.3.6528147"  // Use a fixed NDK version if required
     }
 
     buildTypes {
         release {
             // Add signing config if you have one for release, otherwise, this uses debug signing
-            signingConfig = signingConfigs.debug
+            signingConfig signingConfigs.debug
+            // Enables code shrinking, obfuscation, and optimization
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'com.android.support:multidex:1.0.3'  // If using multidex
 }

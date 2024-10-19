@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';  // Provides Uint8List and kIsWeb
 import 'package:logger/logger.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';  // For mobile/desktop
+import 'package:mobile_data_optimization_app/services/database_helper.dart';  // Import Database Helper
 
 class CacheScreen extends StatefulWidget {
   const CacheScreen({super.key});
@@ -18,6 +19,7 @@ class CacheScreenState extends State<CacheScreen> {
   final String url = 'https://cdn.shopify.com/s/files/1/0263/6270/8027/files/tenshi-Nike-logo.jpg?v=1584898573';  // Image URL
   bool isValidMedia = false;
   double downloadProgress = 0.0;  // Variable to track download progress
+  final DatabaseHelper dbHelper = DatabaseHelper();  // Database helper instance
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +77,7 @@ class CacheScreenState extends State<CacheScreen> {
     );
   }
 
-  // Async method to download and cache the file with progress tracking
+  // Async method to download and cache the file with progress tracking, including saving cache info to database
   Future<void> _downloadAndCacheFileWithProgress() async {
     try {
       logger.i('Downloading file from URL...');
@@ -112,13 +114,20 @@ class CacheScreenState extends State<CacheScreen> {
               // Cache the file on mobile/desktop
               final filePath = await DefaultCacheManager().putFile(url, fileBytes);
               logger.i('File cached at: $filePath');
+
+              // Insert cache details into the database
+              await dbHelper.insertData({
+                'name': url,
+                'value': 1,  // 1 indicates the file is cached successfully
+              });
+
               if (mounted) {
                 setState(() {
                   cachedFileBytes = fileBytes;
                   downloadProgress = 1.0;
                 });
               }
-              _showSnackBar('File cached successfully!');
+              _showSnackBar('File cached successfully and recorded in database!');
             }
           },
           onError: (e) {
@@ -137,7 +146,7 @@ class CacheScreenState extends State<CacheScreen> {
     }
   }
 
-  // Async method to retrieve cached file and display it
+  // Async method to retrieve cached file information from the database
   Future<void> _retrieveFile() async {
     if (kIsWeb) {
       // Display the cached image from memory on web
@@ -152,11 +161,17 @@ class CacheScreenState extends State<CacheScreen> {
       return;
     }
 
-    // Mobile/Desktop logic for retrieving cached file
-    // Add your mobile/desktop logic here (this part has been omitted for simplicity)
+    // Retrieve cached file info from the database
+    List<Map<String, dynamic>> cachedData = await dbHelper.getDataByName(url);
+    if (cachedData.isNotEmpty && cachedData.first['value'] == 1) {
+      _showSnackBar('Cached file found in database. Loading from cache...');
+      // Load the file from the actual cache here
+    } else {
+      _showSnackBar('No cached file found in the database.');
+    }
   }
 
-  // Async method to clear the cache
+  // Async method to clear the cache and delete cache information from the database
   Future<void> _clearCache() async {
     if (kIsWeb) {
       setState(() {
@@ -166,8 +181,13 @@ class CacheScreenState extends State<CacheScreen> {
       return;
     }
 
-    // Mobile/Desktop logic for clearing cache
-    // Add your mobile/desktop logic here (this part has been omitted for simplicity)
+    // Clear the cache
+    await DefaultCacheManager().emptyCache();
+    _showSnackBar('Cache cleared.');
+
+    // Delete cache info from the database
+    await dbHelper.deleteAllData();
+    _showSnackBar('Cache records cleared from the database.');
   }
 
   // Show a SnackBar to provide feedback to the user

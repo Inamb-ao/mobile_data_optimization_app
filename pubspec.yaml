@@ -43,6 +43,12 @@ dependencies:
   archive: ^3.3.0    # Add archive package for compression
   logger: ^1.1.0  # Add logger package
   video_player: ^2.9.2
+  sqflite: ^2.0.0+3  # SQLite package for Flutter
+  path_provider: ^2.0.0  # Helps locate where to store the database
+  path: ^1.8.0  # Add the path package here
+  permission_handler: ^11.3.1
+  android_intent_plus: ^5.1.0
+
 
 
 dev_dependencies:
