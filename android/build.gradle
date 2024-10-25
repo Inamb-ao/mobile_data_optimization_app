@@ -1,21 +1,27 @@
+// Project-level build.gradle
+
 buildscript {
-    ext.kotlin_version = '1.7.10'  // Update to the latest stable Kotlin version
-    classpath 'com.google.gms:google-services:4.3.14' // Make sure this is present
+    ext.kotlin_version = '1.7.10'  // Define the Kotlin version
+
     repositories {
-        google()
-        mavenCentral()
+        google()  // Required for Google dependencies (Firebase, etc.)
+        mavenCentral()  // Central repository for other dependencies
     }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.0'  // Use the latest compatible version of Gradle Plugin
+        // Android Gradle Plugin
+        classpath 'com.android.tools.build:gradle:8.1.0'  // Use the latest compatible version for your project
+        // Kotlin Gradle Plugin
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.gms:google-services:4.3.14'  // For Firebase integration (optional)
+        // Google Services Plugin (for Firebase)
+        classpath 'com.google.gms:google-services:4.3.14'  // For Firebase integration
     }
 }
 
 allprojects {
     repositories {
-        google()
-        mavenCentral()
+        google()  // Required for Google dependencies
+        mavenCentral()  // Maven central for general dependencies
     }
 }
 
@@ -23,12 +29,10 @@ allprojects {
 rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
     project.evaluationDependsOn(":app")
 }
 
-// Clean task
+// Clean task to clean the build directory
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }

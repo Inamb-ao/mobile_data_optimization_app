@@ -1,60 +1,62 @@
+// App-level build.gradle
+
 plugins {
-    id "com.android.application"
-    id "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
-    id "org.jetbrains.kotlin.android"  // Updated Kotlin plugin
-    id "com.google.gms.google-services"  // If using Firebase (optional)
-    apply plugin: 'com.google.gms.google-services' // Add this at the end of the file
-    id "dev.flutter.flutter-gradle-plugin"
+    id "com.android.application"  // Android plugin for application
+    id "org.jetbrains.kotlin.android"  // Kotlin plugin for Android
+    id "com.google.gms.google-services"  // Google Services plugin for Firebase
+    id "dev.flutter.flutter-gradle-plugin"  // Flutter plugin
 }
 
 android {
-    // Set the namespace for your project
-    namespace = "com.example.mobile_data_optimization_app"  // Ensure this matches your application's package name
-
-    // Compile SDK version (set to a fixed version instead of flutter.compileSdkVersion)
+    namespace = "com.example.mobile_data_optimization_app"  // Set your package name
     compileSdkVersion 34  // Latest stable version of Android SDK
 
     defaultConfig {
-        // Set your unique application ID
-        applicationId = "com.example.mobile_data_optimization_app"
-        // Fixed minSdkVersion and targetSdkVersion
-        minSdkVersion 21  // Ensure compatibility with Flutter and Android
-        targetSdkVersion 34  // Set to the latest Android SDK
+        applicationId "com.example.mobile_data_optimization_app"  // Unique application ID
+        minSdkVersion 21  // Minimum SDK version compatible with Flutter
+        targetSdkVersion 34  // Target the latest version
         versionCode 1
         versionName "1.0"
 
-        ndkVersion "21.3.6528147"  // Use a fixed NDK version if required
+        ndkVersion "21.3.6528147"  // Optional: Set NDK version if required
+
+        multiDexEnabled true  // Enable multiDex if your app exceeds the method limit
     }
 
     buildTypes {
         release {
-            // Add signing config if you have one for release, otherwise, this uses debug signing
+            // Use debug signing config for release, or replace with your own release signing config
             signingConfig signingConfigs.debug
-            // Enables code shrinking, obfuscation, and optimization
-            minifyEnabled true
+            minifyEnabled true  // Enable code shrinking and optimization
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8  // Java 8 compatibility
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "1.8"  // Kotlin JVM target
     }
 }
 
 flutter {
-    source = "../.."
+    source = "../.."  // Point to the Flutter source
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'com.android.support:multidex:1.0.3'  // If using multidex
-    implementation platform('com.google.firebase:firebase-bom:32.1.0') // Firebase BOM ensures version compatibility
-    implementation 'com.google.firebase:firebase-analytics' // Add other Firebase services here as needed
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10"  // Specify the exact Kotlin version
+    implementation 'androidx.core:core-ktx:1.7.0'  // AndroidX Core library with Kotlin extensions
+    implementation 'androidx.multidex:multidex:2.0.1'  // MultiDex support for apps exceeding method limits
+
+    // Firebase dependencies
+    implementation platform('com.google.firebase:firebase-bom:32.1.0')  // Firebase BOM to manage Firebase dependencies
+    implementation 'com.google.firebase:firebase-analytics'  // Firebase Analytics
+
+    // Add any other Firebase dependencies here (e.g., Firebase Auth, Firestore, etc.)
 }
+
+// Apply the Google Services plugin at the bottom of the file
+apply plugin: 'com.google.gms.google-services'
