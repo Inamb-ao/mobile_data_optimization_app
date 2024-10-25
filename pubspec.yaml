@@ -44,7 +44,8 @@ dependencies:
   logger: ^1.1.0  # Add logger package
   video_player: ^2.9.2
   sqflite: ^2.0.0+3  # SQLite package for Flutter
-  path_provider: ^2.0.0  # Helps locate where to store the database
+  path_provider: ^2.0.15  # Helps locate where to store the database
+  path_provider_android: ^2.2.12
   path: ^1.8.0  # Add the path package here
   permission_handler: ^11.3.1
   android_intent_plus: ^5.1.0
