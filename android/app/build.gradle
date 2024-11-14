@@ -1,37 +1,26 @@
 plugins {
     id "com.android.application"
-    id "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
-    id "org.jetbrains.kotlin.android"  // Updated Kotlin plugin
-    id "com.google.gms.google-services"  // If using Firebase (optional)
-    apply plugin: 'com.google.gms.google-services' // Add this at the end of the file
+    id "org.jetbrains.kotlin.android"
+    id "com.google.gms.google-services"
     id "dev.flutter.flutter-gradle-plugin"
 }
 
 android {
-    // Set the namespace for your project
-    namespace = "com.example.mobile_data_optimization_app"  // Ensure this matches your application's package name
-
-    // Compile SDK version (set to a fixed version instead of flutter.compileSdkVersion)
-    compileSdkVersion 34  // Latest stable version of Android SDK
+    namespace = "com.example.mobile_data_optimization_app"
+    compileSdkVersion 34
 
     defaultConfig {
-        // Set your unique application ID
-        applicationId = "com.example.mobile_data_optimization_app"
-        // Fixed minSdkVersion and targetSdkVersion
-        minSdkVersion 21  // Ensure compatibility with Flutter and Android
-        targetSdkVersion 34  // Set to the latest Android SDK
+        applicationId "com.example.mobile_data_optimization_app"
+        minSdkVersion 24
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
-
-        ndkVersion "21.3.6528147"  // Use a fixed NDK version if required
+        multiDexEnabled true
     }
 
     buildTypes {
         release {
-            // Add signing config if you have one for release, otherwise, this uses debug signing
             signingConfig signingConfigs.debug
-            // Enables code shrinking, obfuscation, and optimization
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -52,9 +41,11 @@ flutter {
 }
 
 dependencies {
+    implementation "androidx.appcompat:appcompat:1.6.1"  // Latest stable AppCompat version
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'com.android.support:multidex:1.0.3'  // If using multidex
-    implementation platform('com.google.firebase:firebase-bom:32.1.0') // Firebase BOM ensures version compatibility
-    implementation 'com.google.firebase:firebase-analytics' // Add other Firebase services here as needed
+    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
+
+    implementation platform('com.google.firebase:firebase-bom:32.1.0')
+    implementation 'com.google.firebase:firebase-analytics'
 }

@@ -48,7 +48,6 @@ dependencies:
   path_provider_android: ^2.2.12
   path: ^1.8.0  # Add the path package here
   permission_handler: ^11.3.1
-  android_intent_plus: ^5.1.0
 
 
 
