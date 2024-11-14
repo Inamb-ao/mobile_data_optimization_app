@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.mobile_data_optimization_app"
-        minSdkVersion 24
+        minSdkVersion 21
         targetSdkVersion 34
         versionCode 1
         versionName "1.0"

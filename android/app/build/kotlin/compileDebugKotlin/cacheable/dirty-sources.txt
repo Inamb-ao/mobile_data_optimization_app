@@ -1,1 +1,0 @@
-C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\kotlin\com\example\mobile_data_optimization_app\MainActivity.kt

@@ -1,0 +1,42 @@
+com.example.mobile_data_optimization_app-jetified-media3-exoplayer-1.4.1-0 C:\Users\Inambao\.gradle\caches\transforms-3\082430a14f45436f46f3e33fafd04c96\transformed\jetified-media3-exoplayer-1.4.1\res
+com.example.mobile_data_optimization_app-jetified-core-ktx-1.13.1-1 C:\Users\Inambao\.gradle\caches\transforms-3\08ec7daa2a5028b79063bbcfd7dbbfd9\transformed\jetified-core-ktx-1.13.1\res
+com.example.mobile_data_optimization_app-lifecycle-runtime-2.7.0-2 C:\Users\Inambao\.gradle\caches\transforms-3\0d607c848a856a4648de636099cc3f1f\transformed\lifecycle-runtime-2.7.0\res
+com.example.mobile_data_optimization_app-jetified-activity-1.8.1-3 C:\Users\Inambao\.gradle\caches\transforms-3\15fa9b3a14c59a232ee883099e452adf\transformed\jetified-activity-1.8.1\res
+com.example.mobile_data_optimization_app-core-runtime-2.2.0-4 C:\Users\Inambao\.gradle\caches\transforms-3\1aca3f286748d3638b8d1e162626e4c6\transformed\core-runtime-2.2.0\res
+com.example.mobile_data_optimization_app-jetified-profileinstaller-1.3.1-5 C:\Users\Inambao\.gradle\caches\transforms-3\1b677a0f32f03ee18e46b06823c74de6\transformed\jetified-profileinstaller-1.3.1\res
+com.example.mobile_data_optimization_app-jetified-tracing-1.2.0-6 C:\Users\Inambao\.gradle\caches\transforms-3\1e9d9a2e7ee806b6d15cb974ee2066fb\transformed\jetified-tracing-1.2.0\res
+com.example.mobile_data_optimization_app-jetified-savedstate-1.2.1-7 C:\Users\Inambao\.gradle\caches\transforms-3\2606d52d5ea9bfd2e96d9785b6d5b5de\transformed\jetified-savedstate-1.2.1\res
+com.example.mobile_data_optimization_app-jetified-window-1.2.0-8 C:\Users\Inambao\.gradle\caches\transforms-3\3d4b97dc46916357cdc34e74a3ad5e8d\transformed\jetified-window-1.2.0\res
+com.example.mobile_data_optimization_app-jetified-emoji2-views-helper-1.2.0-9 C:\Users\Inambao\.gradle\caches\transforms-3\4d327b31c8ce142178de55e8485abac7\transformed\jetified-emoji2-views-helper-1.2.0\res
+com.example.mobile_data_optimization_app-lifecycle-viewmodel-2.7.0-10 C:\Users\Inambao\.gradle\caches\transforms-3\5b3adcf29bbe01f3a94d513d63def5e0\transformed\lifecycle-viewmodel-2.7.0\res
+com.example.mobile_data_optimization_app-jetified-appcompat-resources-1.6.1-11 C:\Users\Inambao\.gradle\caches\transforms-3\5b6c27ceda9830361028386815573512\transformed\jetified-appcompat-resources-1.6.1\res
+com.example.mobile_data_optimization_app-core-1.13.1-12 C:\Users\Inambao\.gradle\caches\transforms-3\682db32368f7e6710efcc873cdb0b3f7\transformed\core-1.13.1\res
+com.example.mobile_data_optimization_app-jetified-play-services-basement-18.1.0-13 C:\Users\Inambao\.gradle\caches\transforms-3\6c8c2bcef71d91a2869e9a99652e0840\transformed\jetified-play-services-basement-18.1.0\res
+com.example.mobile_data_optimization_app-jetified-security-crypto-1.1.0-alpha06-14 C:\Users\Inambao\.gradle\caches\transforms-3\6e02a8c83fb4415d2172067f20590721\transformed\jetified-security-crypto-1.1.0-alpha06\res
+com.example.mobile_data_optimization_app-fragment-1.7.1-15 C:\Users\Inambao\.gradle\caches\transforms-3\8ebb0f057801b8ad84c4e499a88f331b\transformed\fragment-1.7.1\res
+com.example.mobile_data_optimization_app-jetified-lifecycle-process-2.7.0-16 C:\Users\Inambao\.gradle\caches\transforms-3\a6f5ee4ce7e20f4b8a81b887986c5b33\transformed\jetified-lifecycle-process-2.7.0\res
+com.example.mobile_data_optimization_app-jetified-emoji2-1.2.0-17 C:\Users\Inambao\.gradle\caches\transforms-3\a71a77fe0278491e6e23c9f0a48cc086\transformed\jetified-emoji2-1.2.0\res
+com.example.mobile_data_optimization_app-jetified-window-java-1.2.0-18 C:\Users\Inambao\.gradle\caches\transforms-3\c126c69d7fb51d1b57b69ff03dd43f4e\transformed\jetified-window-java-1.2.0\res
+com.example.mobile_data_optimization_app-jetified-core-1.0.0-19 C:\Users\Inambao\.gradle\caches\transforms-3\c77a3e70456e73527307b0b7e235374b\transformed\jetified-core-1.0.0\res
+com.example.mobile_data_optimization_app-appcompat-1.6.1-20 C:\Users\Inambao\.gradle\caches\transforms-3\cb4b8b40107100b066155e571a207d73\transformed\appcompat-1.6.1\res
+com.example.mobile_data_optimization_app-jetified-annotation-experimental-1.4.0-21 C:\Users\Inambao\.gradle\caches\transforms-3\d24ba2d98fefb4cb693900f4b5131baa\transformed\jetified-annotation-experimental-1.4.0\res
+com.example.mobile_data_optimization_app-jetified-lifecycle-viewmodel-savedstate-2.7.0-22 C:\Users\Inambao\.gradle\caches\transforms-3\d2916e7ba3b40225409a2f8e2f2c9906\transformed\jetified-lifecycle-viewmodel-savedstate-2.7.0\res
+com.example.mobile_data_optimization_app-jetified-lifecycle-livedata-core-ktx-2.7.0-23 C:\Users\Inambao\.gradle\caches\transforms-3\eab26f7c6bb16a95f18daab4f2df3f79\transformed\jetified-lifecycle-livedata-core-ktx-2.7.0\res
+com.example.mobile_data_optimization_app-jetified-firebase-common-20.3.2-24 C:\Users\Inambao\.gradle\caches\transforms-3\ecd36bf832adc10e82d74969fab04c62\transformed\jetified-firebase-common-20.3.2\res
+com.example.mobile_data_optimization_app-lifecycle-livedata-2.7.0-25 C:\Users\Inambao\.gradle\caches\transforms-3\ecdb8ef3dc57cf2024127c297b63bebe\transformed\lifecycle-livedata-2.7.0\res
+com.example.mobile_data_optimization_app-jetified-startup-runtime-1.1.1-26 C:\Users\Inambao\.gradle\caches\transforms-3\f3a7fb2c42ad819c806b7f36dee41bee\transformed\jetified-startup-runtime-1.1.1\res
+com.example.mobile_data_optimization_app-lifecycle-livedata-core-2.7.0-27 C:\Users\Inambao\.gradle\caches\transforms-3\f8dd6881f656b423b27eb91b77008d82\transformed\lifecycle-livedata-core-2.7.0\res
+com.example.mobile_data_optimization_app-packaged_res-28 C:\Users\Inambao\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_secure_storage-9.2.2\android\build\intermediates\packaged_res\release
+com.example.mobile_data_optimization_app-packaged_res-29 C:\Users\Inambao\AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.2.12\android\build\intermediates\packaged_res\release
+com.example.mobile_data_optimization_app-packaged_res-30 C:\Users\Inambao\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_android-12.0.13\android\build\intermediates\packaged_res\release
+com.example.mobile_data_optimization_app-packaged_res-31 C:\Users\Inambao\AppData\Local\Pub\Cache\hosted\pub.dev\sqflite_android-2.4.0\android\build\intermediates\packaged_res\release
+com.example.mobile_data_optimization_app-packaged_res-32 C:\Users\Inambao\AppData\Local\Pub\Cache\hosted\pub.dev\video_player_android-2.7.13\android\build\intermediates\packaged_res\release
+com.example.mobile_data_optimization_app-google-services-33 C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\build\generated\res\google-services\release
+com.example.mobile_data_optimization_app-pngs-34 C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\build\generated\res\pngs\release
+com.example.mobile_data_optimization_app-resValues-35 C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\build\generated\res\resValues\release
+com.example.mobile_data_optimization_app-packageReleaseResources-36 C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\build\intermediates\incremental\release\packageReleaseResources\merged.dir
+com.example.mobile_data_optimization_app-packageReleaseResources-37 C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\build\intermediates\incremental\release\packageReleaseResources\stripped.dir
+com.example.mobile_data_optimization_app-merged-not-compiled-resources-38 C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\build\intermediates\merged-not-compiled-resources\release
+com.example.mobile_data_optimization_app-merged_res-39 C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\build\intermediates\merged_res\release
+com.example.mobile_data_optimization_app-main-40 C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\res
+com.example.mobile_data_optimization_app-release-41 C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\release\res
