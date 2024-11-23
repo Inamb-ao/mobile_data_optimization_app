@@ -48,6 +48,8 @@ dependencies:
   path_provider_android: ^2.2.12
   path: ^1.8.0  # Add the path package here
   permission_handler: ^11.3.1
+  fl_chart: ^0.69.2
+  csv: ^6.0.0
 
 
 
