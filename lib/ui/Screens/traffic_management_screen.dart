@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_data_optimization_app/services/traffic_management_service.dart';
 import 'package:logger/logger.dart';
-import 'package:fl_chart/fl_chart.dart'; // For chart visualization
-import 'dart:async';
-import 'package:path_provider/path_provider.dart';
-import 'package:csv/csv.dart';
-import 'dart:io';
+import 'package:mobile_data_optimization_app/services/traffic_management_service.dart';
+import 'package:fl_chart/fl_chart.dart'; // For charts visualization
 
 class TrafficManagementScreen extends StatefulWidget {
   const TrafficManagementScreen({super.key});
@@ -15,245 +11,95 @@ class TrafficManagementScreen extends StatefulWidget {
 }
 
 class TrafficManagementScreenState extends State<TrafficManagementScreen> {
-  final TrafficManagementService trafficService = TrafficManagementService(); // Service to manage traffic data
-  final Logger logger = Logger(); // Logger for logging events
-
-  List<Map<String, dynamic>> trafficData = []; // Store traffic data
-  bool isLoading = false; // Track loading state
-  bool hasData = false; // Track if traffic data exists
-  double totalTrafficMB = 0; // Total traffic in MB for display
-  double maxTraffic = 0; // Maximum traffic for stats
-  double minTraffic = double.infinity; // Minimum traffic for stats
-  double avgTraffic = 0; // Average traffic for stats
-  bool isMonitoring = false; // Toggle for real-time monitoring
-  Timer? monitoringTimer; // Timer for periodic updates
+  final TrafficManagementService trafficService = TrafficManagementService(); // Service instance
+  final Logger logger = Logger(); // Logger for debugging
+  bool isLoading = true; // Loading state indicator
+  List<Map<String, dynamic>> trafficData = []; // List to store traffic data
+  Map<String, Map<String, int>> trafficBreakdown = {}; // Breakdown by app/network type
 
   @override
   void initState() {
     super.initState();
-    _loadTrafficData(); // Load traffic data on screen initialization
+    _loadTrafficData(); // Load traffic data when the screen initializes
   }
 
-  @override
-  void dispose() {
-    monitoringTimer?.cancel(); // Cancel monitoring when screen is disposed
-    super.dispose();
-  }
-
-  // Helper to format data in MB or GB dynamically
-  String formatTraffic(double bytes) {
-    if (bytes > 1024) {
-      return '${(bytes / 1024).toStringAsFixed(2)} GB';
-    } else {
-      return '${bytes.toStringAsFixed(2)} MB';
-    }
-  }
-
-  // Load traffic data from the database
+  /// Load traffic data and calculate breakdown
   Future<void> _loadTrafficData() async {
-    setState(() {
-      isLoading = true;
-    });
-
+    setState(() => isLoading = true); // Set loading state
     try {
-      List<Map<String, dynamic>> data = await trafficService.getTrafficData();
-      if (data.isNotEmpty) {
-        double total = 0;
-        double max = 0;
-        double min = double.infinity;
+      final data = await trafficService.getTrafficData(); // Fetch data from service
+      final breakdown = await trafficService.getTrafficBreakdown(); // Fetch breakdown
 
-        for (var entry in data) {
-          double valueInMB = entry['value'] / 1e6; // Convert to MB
-          total += valueInMB;
-          if (valueInMB > max) max = valueInMB;
-          if (valueInMB < min) min = valueInMB;
-        }
-
+      if (mounted) {
         setState(() {
-          trafficData = data;
-          totalTrafficMB = total;
-          maxTraffic = max;
-          minTraffic = min;
-          avgTraffic = total / data.length;
-          hasData = true;
+          trafficData = data; // Update state with fetched data
+          trafficBreakdown = breakdown; // Update breakdown data
         });
-        logger.i('Traffic data loaded successfully.');
-      } else {
-        setState(() {
-          hasData = false;
-        });
-        logger.w('No traffic data found.');
       }
     } catch (e) {
-      logger.e('Failed to load traffic data: $e');
+      logger.e("Error loading traffic data: $e");
     } finally {
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) setState(() => isLoading = false); // Reset loading state
     }
   }
 
-  // Collect traffic data periodically
-  void _startLiveMonitoring() {
-    monitoringTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
-      await _collectTrafficData();
-    });
-  }
-
-  void _stopLiveMonitoring() {
-    monitoringTimer?.cancel();
-    logger.i('Live monitoring stopped.');
-  }
-
-  // Collect traffic data and save to the database
-  Future<void> _collectTrafficData() async {
-    setState(() {
-      isLoading = true;
-    });
-
-    try {
-      await trafficService.collectTrafficData();
-      logger.i('Traffic data collected.');
-      _showSnackBar('Traffic data collected successfully.');
-      _loadTrafficData(); // Reload traffic data after collection
-      _checkTrafficThreshold(); // Check for traffic threshold
-    } catch (e) {
-      logger.e('Error collecting traffic data: $e');
-      _showSnackBar('Failed to collect traffic data.');
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
-  // Check for traffic threshold
-  void _checkTrafficThreshold() {
-    if (totalTrafficMB > 5120) { // 5 GB threshold
-      _showSnackBar('Alert: Traffic usage exceeded 5 GB!');
-    }
-  }
-
-  // Export traffic data as CSV
-  Future<void> _exportDataToCSV() async {
-    if (trafficData.isEmpty) {
-      _showSnackBar('No data to export.');
-      return;
-    }
-
-    List<List<dynamic>> rows = [
-      ['Date', 'Traffic (MB)'], // Header row
-      ...trafficData.map((entry) => [
-            entry['date'] ?? 'Unknown Date', // Replace with your date field
-            (entry['value'] / 1e6).toStringAsFixed(2),
-          ]),
-    ];
-
-    String csvData = const ListToCsvConverter().convert(rows);
-    final directory = await getApplicationDocumentsDirectory();
-    final path = '${directory.path}/traffic_data.csv';
-
-    final file = File(path);
-    await file.writeAsString(csvData);
-
-    _showSnackBar('Data exported to $path');
-    logger.i('Data exported to $path');
-  }
-
-  // Clear all traffic data
+  /// Clear all traffic data
   Future<void> _clearTrafficData() async {
-    setState(() {
-      isLoading = true;
-    });
-
     try {
-      await trafficService.clearTrafficData();
-      setState(() {
-        trafficData = [];
-        totalTrafficMB = 0;
-        maxTraffic = 0;
-        minTraffic = double.infinity;
-        avgTraffic = 0;
-        hasData = false;
-      });
-      logger.i('Traffic data cleared.');
-      _showSnackBar('Traffic data cleared.');
+      await trafficService.clearTrafficData(); // Clear data via service
+      _loadTrafficData(); // Reload data
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Traffic data cleared successfully.')),
+        );
+      }
     } catch (e) {
-      logger.e('Error clearing traffic data: $e');
-      _showSnackBar('Failed to clear traffic data.');
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
+      logger.e("Error clearing traffic data: $e");
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error clearing data: $e')),
+        );
+      }
     }
   }
 
-  // Helper to show SnackBars
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
-  }
-
-  // Build the traffic data chart
-  Widget _buildLineChart() {
-    if (trafficData.isEmpty) {
-      return const Text('No traffic data available for visualization.');
+  /// Build chart for traffic breakdown
+  Widget _buildTrafficBreakdownChart() {
+    if (trafficBreakdown.isEmpty) {
+      return const Text('No detailed traffic breakdown available.');
     }
+
+    final flattenedData = <String, int>{};
+    trafficBreakdown.forEach((category, data) {
+      flattenedData[category] = data.values.reduce((a, b) => a + b);
+    });
 
     return SizedBox(
       height: 300,
-      child: LineChart(
-        LineChartData(
-          gridData: const FlGridData(show: true),
+      child: BarChart(
+        BarChartData(
+          alignment: BarChartAlignment.spaceAround,
           titlesData: FlTitlesData(
-            leftTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                reservedSize: 40,
-                getTitlesWidget: (value, meta) =>
-                    Text('${value.toInt()} MB'),
-              ),
-            ),
             bottomTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
                 getTitlesWidget: (value, meta) {
-                  int index = value.toInt();
-                  if (index < trafficData.length) {
-                    return Text('Day ${index + 1}');
+                  final keys = flattenedData.keys.toList();
+                  if (value.toInt() < keys.length) {
+                    return Text(keys[value.toInt()]);
                   }
                   return const Text('');
                 },
               ),
             ),
           ),
-          borderData: FlBorderData(show: true),
-          lineBarsData: [
-            LineChartBarData(
-              spots: trafficData
-                  .asMap()
-                  .entries
-                  .map(
-                    (entry) => FlSpot(
-                      entry.key.toDouble(),
-                      (entry.value['value'] / 1e6),
-                    ),
-                  )
-                  .toList(),
-              isCurved: true,
-              gradient: const LinearGradient(
-                colors: [Colors.blue, Colors.green],
-              ),
-              belowBarData: BarAreaData(
-                show: true,
-                gradient: const LinearGradient(
-                  colors: [Colors.blueAccent, Colors.greenAccent],
-                ),
-              ),
-              dotData: const FlDotData(show: true),
-            ),
-          ],
+          barGroups: flattenedData.entries.map((entry) {
+            final index = flattenedData.keys.toList().indexOf(entry.key);
+            return BarChartGroupData(
+              x: index,
+              barRods: [BarChartRodData(toY: entry.value.toDouble())],
+            );
+          }).toList(),
         ),
       ),
     );
@@ -265,55 +111,45 @@ class TrafficManagementScreenState extends State<TrafficManagementScreen> {
       appBar: AppBar(
         title: const Text('Traffic Management'),
       ),
-      body: Center(
-        child: isLoading
-            ? const CircularProgressIndicator()
-            : SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (hasData)
-                      Text(
-                        'Total Traffic: ${formatTraffic(totalTrafficMB)}',
-                        style: const TextStyle(fontSize: 20),
-                      )
-                    else
-                      const Text(
-                        'No traffic data available.',
-                        style: TextStyle(fontSize: 18, color: Colors.grey),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator()) // Show loader
+          : trafficData.isEmpty
+              ? const Center(child: Text('No traffic data available.')) // Show empty state
+              : Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: trafficData.length,
+                          itemBuilder: (context, index) {
+                            final item = trafficData[index]; // Access traffic data item
+                            return ListTile(
+                              title: Text('Traffic Data #${index + 1}'),
+                              subtitle: Text(
+                                'Value: ${(item['value'] as num?)?.toInt() ?? 0} bytes\n'
+                                'Timestamp: ${item['timestamp'] ?? "Unknown"}',
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: _collectTrafficData,
-                      child: const Text('Collect Traffic Data'),
-                    ),
-                    ElevatedButton(
-                      onPressed: _clearTrafficData,
-                      child: const Text('Clear Traffic Data'),
-                    ),
-                    ElevatedButton(
-                      onPressed: _exportDataToCSV,
-                      child: const Text('Export Data'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          isMonitoring = !isMonitoring;
-                        });
-                        if (isMonitoring) {
-                          _startLiveMonitoring();
-                        } else {
-                          _stopLiveMonitoring();
-                        }
-                      },
-                      child: Text(isMonitoring ? 'Stop Monitoring' : 'Start Monitoring'),
-                    ),
-                    const SizedBox(height: 20),
-                    _buildLineChart(),
-                  ],
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Traffic Breakdown by App/Network Type:',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 10),
+                      _buildTrafficBreakdownChart(), // Display breakdown chart
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: _clearTrafficData, // Clear traffic data
+                        child: const Text('Clear Traffic Data'),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-      ),
     );
   }
 }

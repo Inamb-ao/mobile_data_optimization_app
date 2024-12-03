@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';  // Provides Uint8List and kIsWeb
+import 'package:fl_chart/fl_chart.dart';
 import 'package:logger/logger.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';  // For mobile/desktop
-import 'package:mobile_data_optimization_app/services/database_helper.dart';  // Import Database Helper
+import 'dart:io'; // For file operations
+import 'package:intl/intl.dart'; // For date formatting
+import 'package:mobile_data_optimization_app/services/database_helper.dart';
 
 class CacheScreen extends StatefulWidget {
   const CacheScreen({super.key});
@@ -13,189 +13,244 @@ class CacheScreen extends StatefulWidget {
 }
 
 class CacheScreenState extends State<CacheScreen> {
-  final Logger logger = Logger();  // Logger for logging events
-  Uint8List? cachedFileBytes;  // Store the raw bytes of the cached file (for mobile/desktop)
-  Uint8List? webImageCache;  // In-memory cache for web
-  final String url = 'https://cdn.shopify.com/s/files/1/0263/6270/8027/files/tenshi-Nike-logo.jpg?v=1584898573';  // Image URL
-  bool isValidMedia = false;
-  double downloadProgress = 0.0;  // Variable to track download progress
-  final DatabaseHelper dbHelper = DatabaseHelper();  // Database helper instance
+  final Logger logger = Logger();
+  final DatabaseHelper dbHelper = DatabaseHelper();
+  int totalCacheSize = 0;
+  int cacheHits = 0;
+  int cacheMisses = 0;
+  int dataSaved = 0;
+  List<Map<String, dynamic>> cachedFiles = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCacheSummary();
+  }
+
+  /// Load cache summary and metadata
+  Future<void> _loadCacheSummary() async {
+    setState(() => isLoading = true);
+    try {
+      final metadata = await dbHelper.getCacheMetadata();
+      final cacheSummary = await _calculateCacheStatistics(metadata);
+
+      if (mounted) {
+        setState(() {
+          totalCacheSize = cacheSummary['totalSize'] ?? 0;
+          cacheHits = cacheSummary['cacheHits'] ?? 0;
+          cacheMisses = cacheSummary['cacheMisses'] ?? 0;
+          dataSaved = cacheSummary['dataSavedByCaching'] ?? 0;
+          cachedFiles = metadata;
+        });
+      }
+    } catch (e) {
+      logger.e('Error loading cache summary: $e');
+    } finally {
+      if (mounted) setState(() => isLoading = false);
+    }
+  }
+
+  /// Calculate cache statistics
+  Future<Map<String, dynamic>> _calculateCacheStatistics(
+      List<Map<String, dynamic>> metadata) async {
+    int totalSize = 0;
+    for (var file in metadata) {
+      final fileSize = (file['size'] as num?)?.toInt() ?? 0;
+      totalSize += fileSize;
+    }
+
+    return {
+      'totalSize': totalSize,
+      'cacheHits': cacheHits,
+      'cacheMisses': cacheMisses,
+      'dataSavedByCaching': dataSaved,
+    };
+  }
+
+  /// Preview file content
+  void _previewFile(String filePath) {
+    final file = File(filePath);
+    final fileExtension = file.path.split('.').last.toLowerCase();
+
+    if (['jpg', 'jpeg', 'png', 'gif'].contains(fileExtension)) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ImagePreviewScreen(filePath: filePath),
+        ),
+      );
+    } else if (['txt', 'log', 'json'].contains(fileExtension)) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TextPreviewScreen(filePath: filePath),
+        ),
+      );
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Preview not supported for this file type.')),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cache Management'),
-      ),
-      body: Center(
+      appBar: AppBar(title: const Text('Cache Management')),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildSummarySection(),
+                    const SizedBox(height: 20),
+                    _buildStatisticsChart(),
+                    const SizedBox(height: 20),
+                    _buildCachedFilesList(),
+                  ],
+                ),
+              ),
+            ),
+    );
+  }
+
+  /// Build summary section
+  Widget _buildSummarySection() {
+    return Card(
+      elevation: 4,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                _showSnackBar('Downloading and caching file...');
-                _downloadAndCacheFileWithProgress();
-              },
-              child: const Text('Cache File'),
+            const Text(
+              'Cache Summary',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            ElevatedButton(
-              onPressed: () {
-                _showSnackBar('Retrieving cached file...');
-                _retrieveFile();
-              },
-              child: const Text('Retrieve Cached File'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _showSnackBar('Clearing cache...');
-                _clearCache();
-              },
-              child: const Text('Clear Cache'),
-            ),
-            const SizedBox(height: 20),
-            if (downloadProgress > 0 && downloadProgress < 1)
-              Column(
-                children: [
-                  const Text('Downloading...'),
-                  LinearProgressIndicator(value: downloadProgress),
-                  Text('${(downloadProgress * 100).toStringAsFixed(1)}%'),
-                ],
-              ),
-            if (isValidMedia && webImageCache != null)
-              Column(
-                children: [
-                  const Text('Retrieved Cached Image:'),
-                  Image.memory(
-                    webImageCache!,
-                    fit: BoxFit.cover,
-                  ),  // Show image from memory cache
-                ],
-              ),
+            const SizedBox(height: 10),
+            Text(
+                'Total Size: ${(totalCacheSize / (1024 * 1024)).toStringAsFixed(2)} MB'),
+            Text('Cache Hits: $cacheHits'),
+            Text('Cache Misses: $cacheMisses'),
+            Text(
+                'Data Saved: ${(dataSaved / (1024 * 1024)).toStringAsFixed(2)} MB'),
           ],
         ),
       ),
     );
   }
 
-  // Async method to download and cache the file with progress tracking, including saving cache info to database
-  Future<void> _downloadAndCacheFileWithProgress() async {
-    try {
-      logger.i('Downloading file from URL...');
-      final request = http.Request('GET', Uri.parse(url));
-      final response = await request.send();
+  /// Build cached files list
+  Widget _buildCachedFilesList() {
+    if (cachedFiles.isEmpty) {
+      return const Text('No cached files found.');
+    }
 
-      if (response.statusCode == 200) {
-        int totalBytes = response.contentLength ?? 0;
-        int receivedBytes = 0;
-        List<int> bytes = [];
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: cachedFiles.length,
+      itemBuilder: (context, index) {
+        final file = cachedFiles[index];
+        final fileSize = (file['size'] as num?)?.toDouble() ?? 0.0;
 
-        response.stream.listen(
-          (chunk) {
-            bytes.addAll(chunk);
-            receivedBytes += chunk.length;
-
-            if (totalBytes > 0 && mounted) {
-              setState(() {
-                downloadProgress = receivedBytes / totalBytes;
-              });
-            }
-          },
-          onDone: () async {
-            Uint8List fileBytes = Uint8List.fromList(bytes);
-            if (kIsWeb) {
-              // Cache the image in memory on web
-              setState(() {
-                webImageCache = fileBytes;
-                isValidMedia = true;  // Ensure that we mark the media as valid after caching
-              });
-              logger.i('Web image cached in memory');
-              _showSnackBar('Web image cached successfully!');
-            } else {
-              // Cache the file on mobile/desktop
-              final filePath = await DefaultCacheManager().putFile(url, fileBytes);
-              logger.i('File cached at: $filePath');
-
-              // Insert cache details into the database
-              await dbHelper.insertData({
-                'name': url,
-                'value': 1,  // 1 indicates the file is cached successfully
-              });
-
-              if (mounted) {
-                setState(() {
-                  cachedFileBytes = fileBytes;
-                  downloadProgress = 1.0;
-                });
-              }
-              _showSnackBar('File cached successfully and recorded in database!');
-            }
-          },
-          onError: (e) {
-            logger.e('Error downloading file: $e');
-            _showSnackBar('Error downloading file.');
-          },
-          cancelOnError: true,
+        return ListTile(
+          title: Text(file['path'] ?? 'Unknown File'),
+          subtitle: Text(
+            'Size: ${(fileSize / (1024 * 1024)).toStringAsFixed(2)} MB\n'
+            'Last Modified: ${DateFormat.yMMMd().format(DateTime.parse(file['lastModified']))}',
+          ),
+          trailing: IconButton(
+            icon: const Icon(Icons.preview),
+            onPressed: () => _previewFile(file['path']),
+          ),
         );
-      } else {
-        logger.e('Failed to download file, status code: ${response.statusCode}');
-        _showSnackBar('Failed to download file.');
-      }
-    } catch (e) {
-      logger.e('Error downloading or caching file: $e');
-      _showSnackBar('Error downloading or caching file.');
-    }
+      },
+    );
   }
 
-  // Async method to retrieve cached file information from the database
-  Future<void> _retrieveFile() async {
-    if (kIsWeb) {
-      // Display the cached image from memory on web
-      if (webImageCache != null) {
-        setState(() {
-          isValidMedia = true;
-        });
-        _showSnackBar('Web image loaded from memory cache.');
-      } else {
-        _showSnackBar('No image found in memory cache.');
-      }
-      return;
-    }
-
-    // Retrieve cached file info from the database
-    List<Map<String, dynamic>> cachedData = await dbHelper.getDataByName(url);
-    if (cachedData.isNotEmpty && cachedData.first['value'] == 1) {
-      _showSnackBar('Cached file found in database. Loading from cache...');
-      // Load the file from the actual cache here
-    } else {
-      _showSnackBar('No cached file found in the database.');
-    }
+  /// Build bar chart for cache statistics
+  Widget _buildStatisticsChart() {
+    return BarChart(
+      BarChartData(
+        titlesData: FlTitlesData(
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              getTitlesWidget: (value, meta) {
+                switch (value.toInt()) {
+                  case 0:
+                    return const Text('Hits');
+                  case 1:
+                    return const Text('Misses');
+                  default:
+                    return const Text('');
+                }
+              },
+            ),
+          ),
+        ),
+        barGroups: [
+          BarChartGroupData(
+            x: 0,
+            barRods: [BarChartRodData(toY: cacheHits.toDouble())],
+          ),
+          BarChartGroupData(
+            x: 1,
+            barRods: [BarChartRodData(toY: cacheMisses.toDouble())],
+          ),
+        ],
+      ),
+    );
   }
+}
 
-  // Async method to clear the cache and delete cache information from the database
-  Future<void> _clearCache() async {
-    if (kIsWeb) {
-      setState(() {
-        webImageCache = null;  // Clear in-memory cache for web
-      });
-      _showSnackBar('In-memory cache cleared (Web).');
-      return;
-    }
+/// Image Preview Screen
+class ImagePreviewScreen extends StatelessWidget {
+  final String filePath;
 
-    // Clear the cache
-    await DefaultCacheManager().emptyCache();
-    _showSnackBar('Cache cleared.');
+  const ImagePreviewScreen({required this.filePath, super.key});
 
-    // Delete cache info from the database
-    await dbHelper.deleteAllData();
-    _showSnackBar('Cache records cleared from the database.');
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Image Preview')),
+      body: Center(child: Image.file(File(filePath))),
+    );
   }
+}
 
-  // Show a SnackBar to provide feedback to the user
-  void _showSnackBar(String message) {
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
-    }
+/// Text Preview Screen
+class TextPreviewScreen extends StatelessWidget {
+  final String filePath;
+
+  const TextPreviewScreen({required this.filePath, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Text Preview')),
+      body: FutureBuilder<String>(
+        future: File(filePath).readAsString(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(snapshot.data ?? 'No content available.'),
+            );
+          }
+        },
+      ),
+    );
   }
 }

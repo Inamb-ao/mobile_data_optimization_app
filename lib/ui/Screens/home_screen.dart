@@ -1,99 +1,123 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_data_optimization_app/services/traffic_management_service.dart';
 import 'package:mobile_data_optimization_app/services/database_helper.dart';
 import 'package:mobile_data_optimization_app/ui/Screens/cache_screen.dart';
 import 'package:mobile_data_optimization_app/ui/Screens/cloud_screen.dart';
+import 'package:mobile_data_optimization_app/ui/Screens/compression_screen.dart';
 import 'package:mobile_data_optimization_app/ui/Screens/secure_storage_screen.dart';
+import 'package:mobile_data_optimization_app/ui/Screens/settings_screen.dart';
 import 'package:mobile_data_optimization_app/ui/Screens/traffic_management_screen.dart';
-import 'package:mobile_data_optimization_app/ui/Screens/settings_screen.dart'; // Import the Settings screen
-import 'package:mobile_data_optimization_app/ui/Screens/network_stats_screen.dart'; // Import the NetworkStatsScreen
+import 'package:logger/logger.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key}); // Added const for performance
+  const HomeScreen({super.key});
 
   @override
   HomeScreenState createState() => HomeScreenState();
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  final DatabaseHelper dbHelper = DatabaseHelper(); // Initialize SQLite Helper
+  final DatabaseHelper dbHelper = DatabaseHelper();
+  final TrafficManagementService trafficService = TrafficManagementService();
+  final Logger logger = Logger();
+
+  int trafficSavings = 0; // Traffic savings in bytes
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    setState(() => isLoading = true);
+    try {
+      final savings = await _calculateTrafficSavings();
+      if (mounted) {
+        setState(() {
+          trafficSavings = savings;
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      logger.e("Error loading data: $e");
+      if (mounted) {
+        setState(() => isLoading = false);
+      }
+    }
+  }
+
+  Future<int> _calculateTrafficSavings() async {
+    try {
+      final trafficData = await trafficService.collectTrafficData();
+
+      final mobileReceived = trafficData['mobile']['received'] as int;
+      final mobileTransmitted = trafficData['mobile']['transmitted'] as int;
+      final wifiReceived = trafficData['wifi']['received'] as int;
+      final wifiTransmitted = trafficData['wifi']['transmitted'] as int;
+
+      final totalMobileTraffic = mobileReceived + mobileTransmitted;
+      final totalWifiTraffic = wifiReceived + wifiTransmitted;
+
+      final mobileSavings = (totalMobileTraffic * 0.10).toInt();
+      final wifiSavings = (totalWifiTraffic * 0.05).toInt();
+
+      return mobileSavings + wifiSavings;
+    } catch (e) {
+      logger.e("Error calculating traffic savings: $e");
+      return 0;
+    }
+  }
+
+  String _formatSavings(int bytes) {
+    if (bytes >= 1024 * 1024 * 1024) {
+      return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(2)} GB';
+    } else {
+      return '${(bytes / (1024 * 1024)).toStringAsFixed(2)} MB';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mobile Optimization App'), // Use const for performance
+        title: const Text('Mobile Optimization App'),
       ),
-      body: Center(
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildTrafficSavingsCard(),
+                    const SizedBox(height: 20),
+                    _buildNavigationGrid(),
+                  ],
+                ),
+              ),
+            ),
+    );
+  }
+
+  Widget _buildTrafficSavingsCard() {
+    return Card(
+      elevation: 4,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                _saveNavigation('CacheScreen');
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const CacheScreen()), // Navigate to CacheScreen
-                );
-              },
-              child: const Text('Cache Management'), // Use const for performance
+            const Text(
+              'Data Savings',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            ElevatedButton(
-              onPressed: () {
-                _saveNavigation('CloudScreen');
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const CloudScreen()), // Navigate to CloudScreen
-                );
-              },
-              child: const Text('Cloud Service'), // Use const for performance
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _saveNavigation('SecureStorageScreen');
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SecureStorageScreen()), // Navigate to SecureStorageScreen
-                );
-              },
-              child: const Text('Secure Storage'), // Use const for performance
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _saveNavigation('TrafficManagementScreen');
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const TrafficManagementScreen()), // Navigate to Traffic Management
-                );
-              },
-              child: const Text('Traffic Management'), // Button for Traffic Management
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _saveNavigation('NetworkStatsScreen');
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const NetworkStatsScreen()), // Navigate to NetworkStatsScreen
-                );
-              },
-              child: const Text('Network Statistics'), // Button for Network Stats
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _saveNavigation('SettingsScreen');
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SettingsScreen()), // Navigate to SettingsScreen
-                );
-              },
-              child: const Text('Settings'), // Button for Settings
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                List<Map<String, dynamic>> data = await dbHelper.getAllData();
-                _showSnackBar('Navigation history: ${data.toString()}');
-              },
-              child: const Text('View Navigation History'),
+            const SizedBox(height: 10),
+            Text(
+              'Total Savings: ${_formatSavings(trafficSavings)}',
+              style: const TextStyle(fontSize: 16),
             ),
           ],
         ),
@@ -101,19 +125,48 @@ class HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Method to save navigation actions into the database
-  void _saveNavigation(String screenName) async {
-    await dbHelper.insertData({
-      'name': 'LastVisitedScreen',
-      'value': screenName,
-    });
-    _showSnackBar('Navigated to $screenName');
+  Widget _buildNavigationGrid() {
+    return GridView.count(
+      crossAxisCount: 2,
+      shrinkWrap: true,
+      crossAxisSpacing: 10,
+      mainAxisSpacing: 10,
+      children: [
+        _buildNavigationButton(
+          'Cache Management',
+          const CacheScreen(),
+        ),
+        _buildNavigationButton(
+          'Cloud Service',
+          const CloudScreen(),
+        ),
+        _buildNavigationButton(
+          'Secure Storage',
+          const SecureStorageScreen(),
+        ),
+        _buildNavigationButton(
+          'Traffic Management',
+          const TrafficManagementScreen(),
+        ),
+        _buildNavigationButton(
+          'Settings',
+          const SettingsScreen(),
+        ),
+        _buildNavigationButton(
+          'Compression Service',
+          const CompressionScreen(),
+        ),
+      ],
+    );
   }
 
-  // Method to display feedback using a SnackBar
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
+  Widget _buildNavigationButton(String title, Widget screen) {
+    return ElevatedButton(
+      onPressed: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => screen),
+      ),
+      child: Text(title, textAlign: TextAlign.center),
     );
   }
 }
