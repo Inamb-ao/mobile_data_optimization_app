@@ -7,47 +7,49 @@ class TrafficManagementScreen extends StatefulWidget {
   const TrafficManagementScreen({super.key});
 
   @override
-  TrafficManagementScreenState createState() => TrafficManagementScreenState();
+  TrafficManagementScreenState createState() =>
+      TrafficManagementScreenState();
 }
 
 class TrafficManagementScreenState extends State<TrafficManagementScreen> {
-  final TrafficManagementService trafficService = TrafficManagementService(); // Service instance
-  final Logger logger = Logger(); // Logger for debugging
-  bool isLoading = true; // Loading state indicator
-  List<Map<String, dynamic>> trafficData = []; // List to store traffic data
-  Map<String, Map<String, int>> trafficBreakdown = {}; // Breakdown by app/network type
+  final TrafficManagementService trafficService = TrafficManagementService();
+  final Logger logger = Logger();
+  bool isLoading = true;
+  List<Map<String, dynamic>> trafficData = [];
+  Map<String, Map<String, int>> trafficBreakdown = {};
 
   @override
   void initState() {
     super.initState();
-    _loadTrafficData(); // Load traffic data when the screen initializes
+    _loadTrafficData();
   }
 
-  /// Load traffic data and calculate breakdown
   Future<void> _loadTrafficData() async {
-    setState(() => isLoading = true); // Set loading state
+    setState(() => isLoading = true);
     try {
-      final data = await trafficService.getTrafficData(); // Fetch data from service
-      final breakdown = await trafficService.getTrafficBreakdown(); // Fetch breakdown
+      final data = await trafficService.getTrafficData();
+      final breakdown = await trafficService.getTrafficBreakdown();
+
+      logger.d('Traffic Data: $data');
+      logger.d('Traffic Breakdown: $breakdown');
 
       if (mounted) {
         setState(() {
-          trafficData = data; // Update state with fetched data
-          trafficBreakdown = breakdown; // Update breakdown data
+          trafficData = data;
+          trafficBreakdown = breakdown;
         });
       }
     } catch (e) {
       logger.e("Error loading traffic data: $e");
     } finally {
-      if (mounted) setState(() => isLoading = false); // Reset loading state
+      if (mounted) setState(() => isLoading = false);
     }
   }
 
-  /// Clear all traffic data
   Future<void> _clearTrafficData() async {
     try {
-      await trafficService.clearTrafficData(); // Clear data via service
-      _loadTrafficData(); // Reload data
+      await trafficService.clearTrafficData();
+      await _loadTrafficData();
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Traffic data cleared successfully.')),
@@ -63,43 +65,114 @@ class TrafficManagementScreenState extends State<TrafficManagementScreen> {
     }
   }
 
-  /// Build chart for traffic breakdown
+  /// Format bytes into MB/GB units
+  String _formatBytes(int bytes) {
+    if (bytes >= 1024 * 1024 * 1024) {
+      return '${(bytes / (1024 * 1024 * 1024)).toStringAsFixed(2)} GB';
+    } else if (bytes >= 1024 * 1024) {
+      return '${(bytes / (1024 * 1024)).toStringAsFixed(2)} MB';
+    } else if (bytes >= 1024) {
+      return '${(bytes / 1024).toStringAsFixed(2)} KB';
+    } else {
+      return '$bytes bytes';
+    }
+  }
+
   Widget _buildTrafficBreakdownChart() {
     if (trafficBreakdown.isEmpty) {
       return const Text('No detailed traffic breakdown available.');
     }
 
-    final flattenedData = <String, int>{};
+    final flattenedData = <String, double>{};
     trafficBreakdown.forEach((category, data) {
-      flattenedData[category] = data.values.reduce((a, b) => a + b);
+      final totalBytes = (data['received'] ?? 0) + (data['transmitted'] ?? 0);
+      flattenedData[category] = totalBytes / (1024 * 1024); // Convert to MB
     });
 
-    return SizedBox(
-      height: 300,
-      child: BarChart(
-        BarChartData(
-          alignment: BarChartAlignment.spaceAround,
-          titlesData: FlTitlesData(
-            bottomTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                getTitlesWidget: (value, meta) {
-                  final keys = flattenedData.keys.toList();
-                  if (value.toInt() < keys.length) {
-                    return Text(keys[value.toInt()]);
-                  }
-                  return const Text('');
-                },
-              ),
+    final List<PieChartSectionData> pieSections = flattenedData.entries.map((entry) {
+      final color = Colors.primaries[flattenedData.keys.toList().indexOf(entry.key) % Colors.primaries.length];
+      return PieChartSectionData(
+        value: entry.value,
+        title: '${entry.value.toStringAsFixed(1)} MB',
+        color: color,
+        radius: 80,
+        titleStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
+      );
+    }).toList();
+
+    return Column(
+      children: [
+        SizedBox(
+          height: 300,
+          child: PieChart(
+            PieChartData(
+              sections: pieSections,
+              centerSpaceRadius: 50,
+              sectionsSpace: 2,
             ),
           ),
-          barGroups: flattenedData.entries.map((entry) {
-            final index = flattenedData.keys.toList().indexOf(entry.key);
-            return BarChartGroupData(
-              x: index,
-              barRods: [BarChartRodData(toY: entry.value.toDouble())],
-            );
-          }).toList(),
+        ),
+        const SizedBox(height: 10),
+        _buildLegend(flattenedData),
+      ],
+    );
+  }
+
+  /// Build a custom legend for the pie chart
+  Widget _buildLegend(Map<String, double> flattenedData) {
+    final legendItems = flattenedData.entries.map((entry) {
+      final color = Colors.primaries[flattenedData.keys.toList().indexOf(entry.key) % Colors.primaries.length];
+      return Row(
+        children: [
+          Container(
+            width: 16,
+            height: 16,
+            color: color,
+            margin: const EdgeInsets.only(right: 8),
+          ),
+          Text(
+            entry.key,
+            style: const TextStyle(fontSize: 14),
+          ),
+        ],
+      );
+    }).toList();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: legendItems,
+    );
+  }
+
+  Widget _buildDataSummaryCard() {
+    final totalReceived = trafficData.fold<int>(
+      0,
+      (sum, item) => sum + (item['received'] as int? ?? 0),
+    );
+    final totalTransmitted = trafficData.fold<int>(
+      0,
+      (sum, item) => sum + (item['transmitted'] as int? ?? 0),
+    );
+
+    return Card(
+      elevation: 4,
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Data Summary',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+            Text('Total Received: ${_formatBytes(totalReceived)}'),
+            Text('Total Transmitted: ${_formatBytes(totalTransmitted)}'),
+            Text(
+                'Total Data: ${_formatBytes(totalReceived + totalTransmitted)}'),
+          ],
         ),
       ),
     );
@@ -111,41 +184,45 @@ class TrafficManagementScreenState extends State<TrafficManagementScreen> {
       appBar: AppBar(
         title: const Text('Traffic Management'),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _clearTrafficData,
+        child: const Icon(Icons.delete),
+      ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator()) // Show loader
+          ? const Center(child: CircularProgressIndicator())
           : trafficData.isEmpty
-              ? const Center(child: Text('No traffic data available.')) // Show empty state
+              ? const Center(child: Text('No traffic data available.'))
               : Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      _buildDataSummaryCard(),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Traffic Breakdown by Category:',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 10),
+                      _buildTrafficBreakdownChart(),
+                      const SizedBox(height: 20),
                       Expanded(
                         child: ListView.builder(
                           itemCount: trafficData.length,
                           itemBuilder: (context, index) {
-                            final item = trafficData[index]; // Access traffic data item
+                            final item = trafficData[index];
                             return ListTile(
                               title: Text('Traffic Data #${index + 1}'),
                               subtitle: Text(
-                                'Value: ${(item['value'] as num?)?.toInt() ?? 0} bytes\n'
+                                'Category: ${item['category'] ?? "Unknown"}\n'
+                                'Received: ${_formatBytes((item['received'] as num?)?.toInt() ?? 0)}\n'
+                                'Transmitted: ${_formatBytes((item['transmitted'] as num?)?.toInt() ?? 0)}\n'
                                 'Timestamp: ${item['timestamp'] ?? "Unknown"}',
                               ),
                             );
                           },
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        'Traffic Breakdown by App/Network Type:',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 10),
-                      _buildTrafficBreakdownChart(), // Display breakdown chart
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: _clearTrafficData, // Clear traffic data
-                        child: const Text('Clear Traffic Data'),
                       ),
                     ],
                   ),

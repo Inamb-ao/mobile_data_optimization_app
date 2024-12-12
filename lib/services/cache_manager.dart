@@ -3,62 +3,89 @@ import 'package:logger/logger.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:flutter/foundation.dart'; // For Uint8List and consolidateHttpClientResponseBytes
+import 'package:flutter/foundation.dart';
+import 'package:mobile_data_optimization_app/services/database_helper.dart';
+import 'package:path/path.dart';
+
 
 class CustomCacheManager {
-  // Singleton instance
   static final CustomCacheManager _instance = CustomCacheManager._internal();
 
-  // Factory constructor to return the singleton instance
-  factory CustomCacheManager() {
-    return _instance;
-  }
+  factory CustomCacheManager() => _instance;
 
-  // Private internal constructor for singleton implementation
   CustomCacheManager._internal();
 
-  // Cache manager instance
   final CacheManager _cacheManager = DefaultCacheManager();
-
-  // Initialize the logger
   final Logger _logger = Logger();
 
-  // Cache statistics
-  int cacheHits = 0;
-  int cacheMisses = 0;
-  int dataSavedByCaching = 0;
+  // Persistent cache statistics (can be saved to shared preferences or database)
+  int _cacheHits = 0;
+  int _cacheMisses = 0;
+  int _dataSavedByCaching = 0;
+
+  /// Getters for cache statistics
+  int get cacheHits => _cacheHits;
+  int get cacheMisses => _cacheMisses;
+  int get dataSavedByCaching => _dataSavedByCaching;
 
   /// Fetch data from cache or download it if not cached
-  /// Supports optional compression for reduced size
-  Future<String?> getCachedData(String url, {bool enableCompression = false}) async {
+  Future<String?> getCachedData(String url, {bool enableCompression = false, int compressionQuality = 70}) async {
     try {
       _logger.i('Fetching file from URL: $url');
 
-      // Check if the file exists in cache
+      // Check cache
       final fileInfo = await _cacheManager.getFileFromCache(url);
       if (fileInfo != null) {
-        cacheHits++;
+        _cacheHits++;
         _logger.i('Cache hit for URL: $url');
         return fileInfo.file.path;
       }
 
-      cacheMisses++;
+      _cacheMisses++;
       _logger.w('Cache miss for URL: $url');
 
-      // Download the file and optionally compress it
+      // Download and optionally compress
       final Uint8List fileBytes = await _downloadFile(url);
       final List<int> dataToCache = enableCompression
-          ? await _compressFile(fileBytes)
+          ? await _compressFile(fileBytes, quality: compressionQuality)
           : fileBytes;
 
-      // Save the file to cache
+      // Save file to cache
       final File file = await _cacheManager.putFile(url, Uint8List.fromList(dataToCache));
-      dataSavedByCaching += fileBytes.length - dataToCache.length;
+      _dataSavedByCaching += fileBytes.length - dataToCache.length;
+      
+      // Extract the file extension using the 'path' package
+    String fileExtension = extension(file.path).toLowerCase().replaceFirst('.', '');
+
+    // Insert the cache metadata into the database
+    await DatabaseHelper().insertCacheMetadata({
+      'url': url,
+      'path': file.path,
+      'size': file.lengthSync(),
+      'creation_time': DateTime.now().toIso8601String(),
+      'file_type': fileExtension,  // Store the file extension
+    });
 
       _logger.i('File cached at: ${file.path}');
       return file.path;
     } catch (e) {
       _logger.e('Error fetching or caching file from URL: $url', e);
+      return null;
+    }
+  }
+
+  /// Fetch and return the contents of a cached file
+  Future<String?> fetchAndReadCachedFile(String url, {bool enableCompression = false}) async {
+    try {
+      final filePath = await getCachedData(url, enableCompression: enableCompression);
+      if (filePath != null) {
+        final file = File(filePath);
+        final fileContents = await file.readAsString();
+        return fileContents;
+      }
+      return null;
+    } catch (e) {
+      _logger.e('Error reading cached file from URL: $url', e);
       return null;
     }
   }
@@ -82,12 +109,12 @@ class CustomCacheManager {
     }
   }
 
-  /// Compress file bytes
-  Future<List<int>> _compressFile(Uint8List fileBytes) async {
+  /// Compress file bytes with customizable quality
+  Future<List<int>> _compressFile(Uint8List fileBytes, {required int quality}) async {
     _logger.i('Compressing file...');
     return await FlutterImageCompress.compressWithList(
       fileBytes,
-      quality: 70, // Compression quality
+      quality: quality,
     );
   }
 
@@ -106,9 +133,17 @@ class CustomCacheManager {
       _logger.i('Clearing cache...');
       await _cacheManager.emptyCache();
       _logger.i('Cache cleared successfully.');
+      _resetCacheMetrics();
     } catch (e) {
       _logger.e('Error clearing cache', e);
     }
+  }
+
+  /// Reset cache metrics
+  void _resetCacheMetrics() {
+    _cacheHits = 0;
+    _cacheMisses = 0;
+    _dataSavedByCaching = 0;
   }
 
   /// Calculate the total size of the cache
@@ -181,9 +216,9 @@ class CustomCacheManager {
         'totalSize': totalSize,
         'fileCount': cacheFiles.length,
         'files': cacheFiles,
-        'cacheHits': cacheHits,
-        'cacheMisses': cacheMisses,
-        'dataSavedByCaching': dataSavedByCaching,
+        'cacheHits': _cacheHits,
+        'cacheMisses': _cacheMisses,
+        'dataSavedByCaching': _dataSavedByCaching,
       };
     } catch (e) {
       _logger.e('Error fetching cache summary', e);

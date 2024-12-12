@@ -4,7 +4,6 @@ import android.app.AppOpsManager
 import android.content.Context
 import android.content.Intent
 import android.net.TrafficStats
-import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import androidx.core.content.ContextCompat
@@ -54,23 +53,23 @@ class MainActivity : FlutterActivity() {
             val totalRxBytes = TrafficStats.getTotalRxBytes()
             val totalTxBytes = TrafficStats.getTotalTxBytes()
 
-            // Fallback if TrafficStats returns invalid data
             if (mobileRxBytes < 0 || mobileTxBytes < 0 || totalRxBytes < 0 || totalTxBytes < 0) {
                 Log.w("TrafficStats", "Invalid TrafficStats data. Returning default values.")
-                mapOf(
+                return mapOf(
                     "mobileRxBytes" to 0L,
                     "mobileTxBytes" to 0L,
                     "totalRxBytes" to 0L,
                     "totalTxBytes" to 0L
                 )
-            } else {
-                mapOf(
-                    "mobileRxBytes" to mobileRxBytes,
-                    "mobileTxBytes" to mobileTxBytes,
-                    "totalRxBytes" to totalRxBytes,
-                    "totalTxBytes" to totalTxBytes
-                )
             }
+
+            Log.i("TrafficStats", "Fetched network stats successfully.")
+            mapOf(
+                "mobileRxBytes" to mobileRxBytes,
+                "mobileTxBytes" to mobileTxBytes,
+                "totalRxBytes" to totalRxBytes,
+                "totalTxBytes" to totalTxBytes
+            )
         } catch (e: Exception) {
             Log.e("TrafficStats", "Error fetching network stats", e)
             null
@@ -89,7 +88,9 @@ class MainActivity : FlutterActivity() {
             android.os.Process.myUid(),
             packageName
         )
-        return mode == AppOpsManager.MODE_ALLOWED
+        val hasPermission = mode == AppOpsManager.MODE_ALLOWED
+        Log.i("UsageStats", "Usage stats permission granted: $hasPermission")
+        return hasPermission
     }
 
     /**
@@ -100,6 +101,7 @@ class MainActivity : FlutterActivity() {
             val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
+            Log.i("UsageStats", "Opened usage stats settings.")
         } catch (e: Exception) {
             Log.e("UsageStats", "Failed to open usage stats settings", e)
         }

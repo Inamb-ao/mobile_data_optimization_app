@@ -1,7 +1,7 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:1:1-40:12
-MERGED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:1:1-40:12
+ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:1:1-46:12
+MERGED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:1:1-46:12
 INJECTED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\debug\AndroidManifest.xml:1:1-7:12
 INJECTED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\debug\AndroidManifest.xml:1:1-7:12
 INJECTED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\debug\AndroidManifest.xml:1:1-7:12
@@ -100,50 +100,72 @@ ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_
 		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:6:76-111
 	android:name
 		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:6:22-75
-uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:7:5-79
-MERGED from [com.google.android.gms:play-services-measurement:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\a5d171da09a532c8d983f92fd98942dd\transformed\jetified-play-services-measurement-21.3.0\AndroidManifest.xml:24:5-79
-MERGED from [com.google.android.gms:play-services-measurement:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\a5d171da09a532c8d983f92fd98942dd\transformed\jetified-play-services-measurement-21.3.0\AndroidManifest.xml:24:5-79
-MERGED from [com.google.android.gms:play-services-measurement-api:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\3adfbbc5c23b03e5ed73af0ea1a9bb35\transformed\jetified-play-services-measurement-api-21.3.0\AndroidManifest.xml:23:5-79
-MERGED from [com.google.android.gms:play-services-measurement-api:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\3adfbbc5c23b03e5ed73af0ea1a9bb35\transformed\jetified-play-services-measurement-api-21.3.0\AndroidManifest.xml:23:5-79
-MERGED from [com.google.android.gms:play-services-measurement-impl:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\ffe0bea83080f424f3f7e2f72f63f4fe\transformed\jetified-play-services-measurement-impl-21.3.0\AndroidManifest.xml:24:5-79
-MERGED from [com.google.android.gms:play-services-measurement-impl:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\ffe0bea83080f424f3f7e2f72f63f4fe\transformed\jetified-play-services-measurement-impl-21.3.0\AndroidManifest.xml:24:5-79
-MERGED from [com.google.android.gms:play-services-measurement-sdk-api:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\4041033099c3a2593ae0706e0df5f521\transformed\jetified-play-services-measurement-sdk-api-21.3.0\AndroidManifest.xml:24:5-79
-MERGED from [com.google.android.gms:play-services-measurement-sdk-api:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\4041033099c3a2593ae0706e0df5f521\transformed\jetified-play-services-measurement-sdk-api-21.3.0\AndroidManifest.xml:24:5-79
-MERGED from [com.google.firebase:firebase-installations:17.1.3] C:\Users\Inambao\.gradle\caches\transforms-3\681473be0ac8f759b6c39de1fb4e613d\transformed\jetified-firebase-installations-17.1.3\AndroidManifest.xml:9:5-79
-MERGED from [com.google.firebase:firebase-installations:17.1.3] C:\Users\Inambao\.gradle\caches\transforms-3\681473be0ac8f759b6c39de1fb4e613d\transformed\jetified-firebase-installations-17.1.3\AndroidManifest.xml:9:5-79
-MERGED from [androidx.media3:media3-common:1.4.1] C:\Users\Inambao\.gradle\caches\transforms-3\c5c75bcde712257ce7f3b4dfaa6da06d\transformed\jetified-media3-common-1.4.1\AndroidManifest.xml:22:5-79
-MERGED from [androidx.media3:media3-common:1.4.1] C:\Users\Inambao\.gradle\caches\transforms-3\c5c75bcde712257ce7f3b4dfaa6da06d\transformed\jetified-media3-common-1.4.1\AndroidManifest.xml:22:5-79
-MERGED from [androidx.media3:media3-exoplayer:1.4.1] C:\Users\Inambao\.gradle\caches\transforms-3\082430a14f45436f46f3e33fafd04c96\transformed\jetified-media3-exoplayer-1.4.1\AndroidManifest.xml:22:5-79
-MERGED from [androidx.media3:media3-exoplayer:1.4.1] C:\Users\Inambao\.gradle\caches\transforms-3\082430a14f45436f46f3e33fafd04c96\transformed\jetified-media3-exoplayer-1.4.1\AndroidManifest.xml:22:5-79
-	android:name
-		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:7:22-76
-uses-permission#android.permission.INTERNET
-ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:8:5-67
-MERGED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:8:5-67
-MERGED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:8:5-67
-MERGED from [com.google.android.gms:play-services-measurement:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\a5d171da09a532c8d983f92fd98942dd\transformed\jetified-play-services-measurement-21.3.0\AndroidManifest.xml:23:5-67
-MERGED from [com.google.android.gms:play-services-measurement:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\a5d171da09a532c8d983f92fd98942dd\transformed\jetified-play-services-measurement-21.3.0\AndroidManifest.xml:23:5-67
-MERGED from [com.google.android.gms:play-services-measurement-api:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\3adfbbc5c23b03e5ed73af0ea1a9bb35\transformed\jetified-play-services-measurement-api-21.3.0\AndroidManifest.xml:22:5-67
-MERGED from [com.google.android.gms:play-services-measurement-api:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\3adfbbc5c23b03e5ed73af0ea1a9bb35\transformed\jetified-play-services-measurement-api-21.3.0\AndroidManifest.xml:22:5-67
-MERGED from [com.google.android.gms:play-services-measurement-impl:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\ffe0bea83080f424f3f7e2f72f63f4fe\transformed\jetified-play-services-measurement-impl-21.3.0\AndroidManifest.xml:23:5-67
-MERGED from [com.google.android.gms:play-services-measurement-impl:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\ffe0bea83080f424f3f7e2f72f63f4fe\transformed\jetified-play-services-measurement-impl-21.3.0\AndroidManifest.xml:23:5-67
-MERGED from [com.google.android.gms:play-services-measurement-sdk-api:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\4041033099c3a2593ae0706e0df5f521\transformed\jetified-play-services-measurement-sdk-api-21.3.0\AndroidManifest.xml:23:5-67
-MERGED from [com.google.android.gms:play-services-measurement-sdk-api:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\4041033099c3a2593ae0706e0df5f521\transformed\jetified-play-services-measurement-sdk-api-21.3.0\AndroidManifest.xml:23:5-67
-MERGED from [com.google.firebase:firebase-installations:17.1.3] C:\Users\Inambao\.gradle\caches\transforms-3\681473be0ac8f759b6c39de1fb4e613d\transformed\jetified-firebase-installations-17.1.3\AndroidManifest.xml:10:5-67
-MERGED from [com.google.firebase:firebase-installations:17.1.3] C:\Users\Inambao\.gradle\caches\transforms-3\681473be0ac8f759b6c39de1fb4e613d\transformed\jetified-firebase-installations-17.1.3\AndroidManifest.xml:10:5-67
-	android:name
-		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:8:22-64
 uses-permission#android.permission.READ_PHONE_STATE
-ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:9:5-75
+ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:7:5-75
 	android:name
-		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:9:22-72
-uses-permission#android.permission.ACCESS_WIFI_STATE
-ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:10:5-76
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:7:22-72
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:8:5-81
 	android:name
-		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:10:22-73
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:8:22-78
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:9:5-80
+MERGED from [:file_picker] C:\Users\Inambao\AppData\Local\Pub\Cache\hosted\pub.dev\file_picker-8.1.4\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-9:38
+MERGED from [:file_picker] C:\Users\Inambao\AppData\Local\Pub\Cache\hosted\pub.dev\file_picker-8.1.4\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-9:38
+	android:maxSdkVersion
+		ADDED from [:file_picker] C:\Users\Inambao\AppData\Local\Pub\Cache\hosted\pub.dev\file_picker-8.1.4\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:9-35
+	android:name
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:9:22-77
+uses-permission#android.permission.MANAGE_EXTERNAL_STORAGE
+ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:10:5-111
+	tools:ignore
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:10:80-108
+	android:name
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:10:22-79
+uses-permission#android.permission.INTERNET
+ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:11:5-67
+MERGED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:11:5-67
+MERGED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:11:5-67
+MERGED from [com.google.android.gms:play-services-measurement:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\a5d171da09a532c8d983f92fd98942dd\transformed\jetified-play-services-measurement-21.3.0\AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-measurement:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\a5d171da09a532c8d983f92fd98942dd\transformed\jetified-play-services-measurement-21.3.0\AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-measurement-api:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\3adfbbc5c23b03e5ed73af0ea1a9bb35\transformed\jetified-play-services-measurement-api-21.3.0\AndroidManifest.xml:22:5-67
+MERGED from [com.google.android.gms:play-services-measurement-api:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\3adfbbc5c23b03e5ed73af0ea1a9bb35\transformed\jetified-play-services-measurement-api-21.3.0\AndroidManifest.xml:22:5-67
+MERGED from [com.google.android.gms:play-services-measurement-impl:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\ffe0bea83080f424f3f7e2f72f63f4fe\transformed\jetified-play-services-measurement-impl-21.3.0\AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-measurement-impl:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\ffe0bea83080f424f3f7e2f72f63f4fe\transformed\jetified-play-services-measurement-impl-21.3.0\AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\4041033099c3a2593ae0706e0df5f521\transformed\jetified-play-services-measurement-sdk-api-21.3.0\AndroidManifest.xml:23:5-67
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\4041033099c3a2593ae0706e0df5f521\transformed\jetified-play-services-measurement-sdk-api-21.3.0\AndroidManifest.xml:23:5-67
+MERGED from [com.google.firebase:firebase-installations:17.1.3] C:\Users\Inambao\.gradle\caches\transforms-3\681473be0ac8f759b6c39de1fb4e613d\transformed\jetified-firebase-installations-17.1.3\AndroidManifest.xml:10:5-67
+MERGED from [com.google.firebase:firebase-installations:17.1.3] C:\Users\Inambao\.gradle\caches\transforms-3\681473be0ac8f759b6c39de1fb4e613d\transformed\jetified-firebase-installations-17.1.3\AndroidManifest.xml:10:5-67
+	android:name
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:11:22-64
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:12:5-79
+MERGED from [com.google.android.gms:play-services-measurement:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\a5d171da09a532c8d983f92fd98942dd\transformed\jetified-play-services-measurement-21.3.0\AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.gms:play-services-measurement:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\a5d171da09a532c8d983f92fd98942dd\transformed\jetified-play-services-measurement-21.3.0\AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.gms:play-services-measurement-api:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\3adfbbc5c23b03e5ed73af0ea1a9bb35\transformed\jetified-play-services-measurement-api-21.3.0\AndroidManifest.xml:23:5-79
+MERGED from [com.google.android.gms:play-services-measurement-api:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\3adfbbc5c23b03e5ed73af0ea1a9bb35\transformed\jetified-play-services-measurement-api-21.3.0\AndroidManifest.xml:23:5-79
+MERGED from [com.google.android.gms:play-services-measurement-impl:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\ffe0bea83080f424f3f7e2f72f63f4fe\transformed\jetified-play-services-measurement-impl-21.3.0\AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.gms:play-services-measurement-impl:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\ffe0bea83080f424f3f7e2f72f63f4fe\transformed\jetified-play-services-measurement-impl-21.3.0\AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\4041033099c3a2593ae0706e0df5f521\transformed\jetified-play-services-measurement-sdk-api-21.3.0\AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.gms:play-services-measurement-sdk-api:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\4041033099c3a2593ae0706e0df5f521\transformed\jetified-play-services-measurement-sdk-api-21.3.0\AndroidManifest.xml:24:5-79
+MERGED from [com.google.firebase:firebase-installations:17.1.3] C:\Users\Inambao\.gradle\caches\transforms-3\681473be0ac8f759b6c39de1fb4e613d\transformed\jetified-firebase-installations-17.1.3\AndroidManifest.xml:9:5-79
+MERGED from [com.google.firebase:firebase-installations:17.1.3] C:\Users\Inambao\.gradle\caches\transforms-3\681473be0ac8f759b6c39de1fb4e613d\transformed\jetified-firebase-installations-17.1.3\AndroidManifest.xml:9:5-79
+MERGED from [androidx.media3:media3-common:1.4.1] C:\Users\Inambao\.gradle\caches\transforms-3\c5c75bcde712257ce7f3b4dfaa6da06d\transformed\jetified-media3-common-1.4.1\AndroidManifest.xml:22:5-79
+MERGED from [androidx.media3:media3-common:1.4.1] C:\Users\Inambao\.gradle\caches\transforms-3\c5c75bcde712257ce7f3b4dfaa6da06d\transformed\jetified-media3-common-1.4.1\AndroidManifest.xml:22:5-79
+MERGED from [androidx.media3:media3-exoplayer:1.4.1] C:\Users\Inambao\.gradle\caches\transforms-3\082430a14f45436f46f3e33fafd04c96\transformed\jetified-media3-exoplayer-1.4.1\AndroidManifest.xml:22:5-79
+MERGED from [androidx.media3:media3-exoplayer:1.4.1] C:\Users\Inambao\.gradle\caches\transforms-3\082430a14f45436f46f3e33fafd04c96\transformed\jetified-media3-exoplayer-1.4.1\AndroidManifest.xml:22:5-79
+	android:name
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:12:22-76
+uses-permission#android.permission.FOREGROUND_SERVICE
+ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:13:5-77
+	android:name
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:13:22-74
+uses-permission#android.permission.POST_NOTIFICATIONS
+ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:14:5-77
+	android:name
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:14:22-74
 application
-ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:12:5-39:19
+ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:16:5-45:19
 INJECTED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\debug\AndroidManifest.xml
 MERGED from [com.google.firebase:firebase-analytics:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\2afc1b5532f98a860e65de0b10903fe1\transformed\jetified-firebase-analytics-21.3.0\AndroidManifest.xml:7:5-20
 MERGED from [com.google.firebase:firebase-analytics:21.3.0] C:\Users\Inambao\.gradle\caches\transforms-3\2afc1b5532f98a860e65de0b10903fe1\transformed\jetified-firebase-analytics-21.3.0\AndroidManifest.xml:7:5-20
@@ -187,48 +209,52 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\In
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\Inambao\.gradle\caches\transforms-3\c2e3a0c4e56e44eaacb069092cbd41f0\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
 	android:extractNativeLibs
 		INJECTED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\debug\AndroidManifest.xml
+	android:requestLegacyExternalStorage
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:21:9-52
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.13.1] C:\Users\Inambao\.gradle\caches\transforms-3\682db32368f7e6710efcc873cdb0b3f7\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
 	android:label
-		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:13:9-48
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:17:9-48
+	tools:targetApi
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:22:9-29
 	android:icon
-		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:14:9-43
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:18:9-43
 	android:allowBackup
-		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:15:9-35
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:19:9-35
 	android:theme
-		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:16:9-43
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:20:9-43
 activity#com.example.mobile_data_optimization_app.MainActivity
-ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:19:9-37:20
+ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:25:9-43:20
 	android:launchMode
-		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:22:13-43
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:28:13-43
 	android:hardwareAccelerated
-		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:25:13-47
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:31:13-47
 	android:windowSoftInputMode
-		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:26:13-55
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:32:13-55
 	android:exported
-		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:21:13-36
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:27:13-36
 	android:configChanges
-		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:24:13-121
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:30:13-121
 	android:theme
-		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:23:13-47
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:29:13-47
 	android:name
-		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:20:13-41
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:26:13-41
 meta-data#flutterEmbedding
-ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:29:13-31:37
+ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:35:13-37:37
 	android:value
-		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:31:17-34
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:37:17-34
 	android:name
-		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:30:17-48
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:36:17-48
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:33:13-36:29
+ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:39:13-42:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:34:17-69
+ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:40:17-69
 	android:name
-		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:34:25-66
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:40:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:35:17-77
+ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:41:17-77
 	android:name
-		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:35:27-74
+		ADDED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\main\AndroidManifest.xml:41:27-74
 uses-sdk
 INJECTED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\debug\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\debug\AndroidManifest.xml
@@ -393,12 +419,6 @@ MERGED from [com.getkeepsafe.relinker:relinker:1.4.5] C:\Users\Inambao\.gradle\c
 		INJECTED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\debug\AndroidManifest.xml
 	android:minSdkVersion
 		INJECTED from C:\Users\Inambao\Desktop\FINAL YEAR PROJECT\mobile_data_optimization_app\android\app\src\debug\AndroidManifest.xml
-uses-permission#android.permission.READ_EXTERNAL_STORAGE
-ADDED from [:file_picker] C:\Users\Inambao\AppData\Local\Pub\Cache\hosted\pub.dev\file_picker-8.1.4\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:7:5-9:38
-	android:maxSdkVersion
-		ADDED from [:file_picker] C:\Users\Inambao\AppData\Local\Pub\Cache\hosted\pub.dev\file_picker-8.1.4\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:9-35
-	android:name
-		ADDED from [:file_picker] C:\Users\Inambao\AppData\Local\Pub\Cache\hosted\pub.dev\file_picker-8.1.4\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:9-64
 queries
 ADDED from [:file_picker] C:\Users\Inambao\AppData\Local\Pub\Cache\hosted\pub.dev\file_picker-8.1.4\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:5-17:15
 intent#action:name:android.intent.action.GET_CONTENT+data:mimeType:*/*

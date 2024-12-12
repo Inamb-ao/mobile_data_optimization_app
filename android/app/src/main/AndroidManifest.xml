@@ -2,20 +2,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.mobile_data_optimization_app">
 
-    <!-- Permissions for Traffic Management -->
+    <!-- Permissions -->
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:label="Mobile Optimization App"
         android:icon="@mipmap/ic_launcher"
         android:allowBackup="true"
-        android:theme="@style/LaunchTheme">
+        android:theme="@style/LaunchTheme"
+        android:requestLegacyExternalStorage="true"
+        tools:targetApi="28">
 
-        <!-- Main Activity Configuration -->
+        <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
